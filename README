@@ -1,0 +1,553 @@
+= Nitro 0.42.0 README
+
+Nitro provides everything you need to develop professional Web
+applications using Ruby and Javascript. 
+
+Nitro redefines Rapid Application Development by providing a 
+clean, yet efficient API, a layer of domain specific languages 
+implemented on top of Ruby and the most powerful and elegant 
+object relational mapping solution available everywhere. 
+
+Nitro is Web 2.0 ready, featuring excellent support for AJAX, 
+XML, Syndication while staying standards compliant.
+
+Nitro gives choice to the developer: Multiple paradigms are 
+implemented, incorporating ideas from Rails, CherryPy, Catalyst, 
+Wee, PHP, JSP and Microsoft.NET and more. The developer is free
+to choose the pattern that better fits his application. This 
+kind of freedom makes Nitro applicable to a wide range of 
+applications, spanning from big, scalable web sites with thousands
+of concurrent users to simple solutions for deployment on intranet
+desktops.
+
+
+== Features
+
+A short summary of the major features:
+
+* Multiparadigm web applications.
+
+  You can write applications in the ASP/JSP/PHP style, ie by 
+  writting server pages that are automatically translated to Ruby 
+  code by Nitro.
+
+  Or, you can write MVC style applications (like Rails) by 
+  utilizing the powerfull Object publishing/Controller mechanism.
+  
+  Alternatively, you can use stateful components and/or programmatic
+  rendering: Nitro is the premium container for Wee applications.
+
+* Advanced Code generation.
+
+  Nitro in essence writes the Web application for you. The system
+  provides a number of domain spefic language extensions (meta-languages)
+  to automate the generation of common code (OR mapping, validation,
+  forms generation, syndication, markup and more).
+
+* Object-Relational Mapping 
+
+  Nitro integrates the Og (ObjectGraph) object-relational mapping 
+  library. Og manages the lifecycle of Ruby objects and  provides 
+  transparent serialization of object graphs to stores (typically
+  RDBM systems)/.
+  
+  Unlike other similar solutions Og maps standard Ruby objects 
+  to SQL tables and not vice versa. Og provides a domain specific 
+  language to describe the relations between objects, a flexible 
+  and intuitive api for querieng the database, raw access to the 
+  SQL language if needed (for example to fine tune the automatically 
+  generated SQL tables, or for custom queries), provides automatic 
+  validation, suports deserialization to Ruby objects or tuples, 
+  automatically generates join tables for many_to_many relations 
+  and provides a collection of usefull Mixins to synthesize 
+  common Entities.
+  
+  Adapters for PostgreSQL, MySQL, SQLite3, Memory, KirbyBase, 
+  Filesystem, Oracle and SQL Server are included.
+
+* XML server pages (.xhtml)
+
+  Nitro uses standard, fully xml compliant xhtml pages with logic
+  code, thus combining the  power of embededed Ruby (like erb, eruby) 
+  with the xml compliance  of Amrita. Even though it is a 'Callback' 
+  style templating system it is flexible enough to run as 'Pipeline' 
+  style system if the developer prefers this mode of operation.
+  
+  <!-- example page -->
+  <html>
+
+  <?r  
+    title = 'Example'
+    version = params['version']
+  ?>
+  
+  <h1>#{title}</h1>
+  
+  <?r if version > 1 ?>
+    <b>Version:</b> #{version}
+  <?r  end ?>
+  
+  </html>
+
+* Action / Fragment Synthesis
+
+  Nitro actions and templates can include other actions or templates
+  to allow for component-based development.
+
+  Here is an example of including an action from a template:
+
+  <render href="list" />
+
+  or
+
+  <inject href="list" />
+
+  or from an action:
+
+  list()
+
+  Nitro server pages can include fragments at 'Compile' time or at
+  'RunTime' time.
+  
+  <!-- compile time include (static include) -->
+  <?include href="myfile.inc" ?>
+  
+  <!-- run time include (dynamic include) -->
+  <include href="myfile.inc" />
+  
+* Nitro provides full support for Aspect Oriented programming. 
+  You can use aspects to intercept and customize any component 
+  of the Nitro system.
+
+* Fully customizable Compile time and Render time pipeline.
+  Nitro features a fully programmable source transformation pipeline.
+  For example a pipeline component transforms a standard XHTML 
+  document with embeded ruby-code processing instructions to Ruby 
+  code. Another component could apply XSLT transformation at compile
+  time to avoid the performance hit. Using the advanced AOP features
+  or standard OOP practice you can customize the pipeline to your
+  needs.
+  
+  The same is true for the run time render pipeline. Nitro makes
+  it exteremely easy to add filters or customize the behaviour
+  of actions. Example filters are the autologin filter, 
+  a gzip filter etc.
+
+* Excellent support for AJAX and Javascript. Nitro integrates 
+  a set of powerful javascript libraries:
+  
+  Prototype
+  Script.aculo.us
+  Behaviour
+  
+  These libraries are transparently integrated in the rendering
+  pipeline.
+
+* Elements subsystem. This is Tag libraries on steroids. You can 
+  define xhtml tags that generate calls to associated Ruby classes
+  to handle rendering special fx, skins and more.
+  
+* Multiple Platforms
+
+  Runs on Linux, Windows and Mac OSX. It will probably run on other
+  Unix based system with minor modifications. 
+
+* Multiple Adapters
+
+  Nitro supports multiple web server configurations. Out of the box
+  it supports WEBrick (pure ruby), Lighttpd (fastcgi/scgi), 
+  Apache (fastcgi / scgi). The prefered adapter is SCGI.
+  More options will be available in the future.
+  
+* Minimum configuration
+
+  Configuration files are kept to the absolute minimum. The target
+  is to have no configuration files at all.
+
+* Scaffolding
+
+  This enables the developer to get started as fast as possible.
+
+* Auto administration system.
+
+  Just one line of code automagically creates an administration
+  system for your web application:
+  
+  require 'part/admin'
+  
+* Distributed State
+
+  Nitro provides a powerfull distributed state mechanism that utilizes
+  the DRb library. A typicall use of this infrastructure is to provide
+  distributed sessions when running your application over a server 
+  cluster. Distributed sessions are fully transparent to the developer.
+
+* Scalability.
+
+  Nitro promotes the 'share-nothing' architecture pioneered in sites
+  like Yahoo, LiveJournal, Slashdot, etc to facilate easy scaling
+  through hardware.
+  
+* Parts
+
+  Parts are organized modules of web services. A Web Framework that
+  integrates a large collection of parts (User management, Blog,
+  Fora, CMS, Personalization, ..) will be released.
+    
+* Web services
+
+  Nitro automates the process of web service development. Just let
+  Nitro's advanced scaffolding algorithms to generate the boilerplate
+  code for you.
+  
+* Fine-grained Caching
+
+  Nitro provides a well designed and efficient caching mechanism. Caching
+  will be provided at the following levels:
+  
+  Object Cache (deserialized objects) (coming soon)
+  Fragment Caching (cache generated sub-parts of a page, or a page)
+  Action Caching (full pages)
+  Output Caching (the whole page is stored as html and served by
+  the front web server, thus completely bypassing Nitro)
+  HTTP 1.1 Caching (downstream caching of whole pages)
+
+  A variety of invalidation strategies can be implemented.
+
+* Programmatic xhtml rendering.
+
+  labels = ['George', 'Stella', 'Renos']
+  html {
+    head {
+      title 'A simple test'
+    }
+    body {
+      10.times {
+        strong 'Hello World'
+        i 'Hello World222'
+      }
+      select(:id => 'names') {
+        options :labels => labels, :selected => 1
+      }
+    }
+
+* Automatic validation.
+
+  class User
+    prop_accessor :name, :password, String
+    validate_confirmation :password
+    validate_length :name, :range => 2..12
+  end
+
+  u = User.new(...)
+  unless u.valid?
+    p u.errors.on(:name)
+    p u.errors[:password]
+  end
+  
+* Excellent support for Test Driven Development and Testing. 
+  Nitro provides full support for fixtures, mocking and a set
+  of custom assertions for testing everything, from controller
+  logic to your models.
+  
+* Implicit nice urls. Nitro automatically generates nice urls
+  for your actions. However, if you want to customize the defaults,
+  a powerful routing mechanism is provided.
+  
+* Advanced debuging features
+
+  When running in debug mode, all exceptions raised are logged
+  to a special debug panel in the current page. Find out the offending
+  file and line from the exception dump, fix the bug, refresh the page.
+  
+  in-process console: inject an irb session to a running application
+  server. You can use the irb console to investigate all variables
+  and code in your running server process.
+
+  integrates the 'breakpoint' library by Florian Gross. The Breakpoint 
+  library provides the convenience of being able to inspect and modify 
+  state, diagnose bugs all via IRB by simply setting breakpoints in
+  your applications by the call of a method.
+
+* Helper mixins
+
+  Nitro is distributed with a collection of usefull mixins
+  to make form based application development easier (for example
+  an efficient, database-aware Pager component).
+  
+* Localization
+
+  Nitro supports efficient and fully transparent localization of 
+  web applications.
+
+* Morphing
+
+  Nitro provides revolutionary morphing capabilities. You can 
+  easily add extra attributes to standard html tags or create
+  new tags.
+  
+  Here are some example morpher (included by default):
+  
+  <div id="mydiv" draggable="true">...
+  
+  makes this div draggable using Scriptaculous.
+  
+  <li for="photo in photos">#{photo.title}</li>
+  
+  generates
+  
+  <? for photo in photos ?>
+    <li>#{photo.title}</li>
+  <? end ?>
+  
+  and much much more. Your imagination is the limit.
+  
+* Mailer 
+
+  Nitro provides excellent support for handling emails in your
+  Web application. Both incoming and outgoing email support is
+  provided.
+  
+* Wee integration.
+
+  Nitro is the premium container for Wee stateful components.
+
+
+== What's new
+
+For information about the latest changes please consult the
+file
+
+doc/RELEASES
+
+
+== Download
+
+The latest version of Nitro can be found at
+
+* http://www.nitroproject.org
+
+
+== Documentation
+
+Documentation for Nitro can be found at
+
+* http://www.nitroproject.org
+
+Don't forget to read the file doc/RELEASES for usefull
+documentation bits. Also, have a look at the test cases in
+the test directory for examples of usage.
+
+
+== Videos / Screencasts
+
+A number of videos  that demonstrate Nitro in practical usage
+are available here:
+
+http://www.nitroproject.org/view/Videos
+
+
+== Requirements
+
+Nitro requires the following applications or libraries:
+
+* Ruby 1.8.1 and greater 
+  http://www.ruby-lang.org
+  Version 1.8.2 is recomended
+
+* Facets 
+  http://facets.rubyforge.org
+  
+The following applications or libraries are OPTIONAL:
+
+* PostgreSQL 
+  http://www.postgres.org
+  Used for Database driven web applications.
+  
+* MySQL 
+  http://www.mysql.org
+  Used for Database driven web applications.
+
+* Ruby-psql 
+  http://www.postgresql.jp/interfaces/ruby/archive/ruby-postgres-0.7.1.tar.gz
+  Ruby interface to the PostgreSQL RDBMS.
+
+* Ruby-mysql 
+  http://tmtm.org/ja/ruby/mysql/README_en.html
+  Ruby interface to the MySQL RDBMS.
+  
+* Ruby-XSLT 
+  http://gregoire.lejeune.free.fr/ruby-xslt_0.4.0.tar.gz
+  Used for XSLT based templates.
+
+* Apache 2.0 
+  http://www.apache.org
+  Used to host application in production environments.  
+
+* Lighttpd
+  http://www.lighttpd.net/
+  A lean and efficient web server. A perfect companion to Nitro.
+
+* Ruby-fcgi 
+  http://www.moonwolf.com/ruby/archive/ruby-fcgi-0.8.5.tar.gz
+  Used for FCGI based applications.
+
+* FastCGI development kit
+  http://www.fastcgi.com/dist/fcgi.tar.gz
+  Needed to compile the C-version of the ruby fcgi library.
+
+* RedCloth
+  http://rubyforge.org/projects/redcloth/
+  
+Please install the required applications and libraries before continuing
+with the installation of Nitro.
+
+
+== Instalation
+
+Nitro is distributed as a RubyGem. First of all make sure you have
+installed RubyGems on your system. Then run the following command:
+
+gem install nitro
+
+(make sure you have the latest stable versions of Ruby and RubyGems
+installed)
+
+Then try to run the examples/tiny Example application.
+
+A tar.gz distribution is also available on http://www.rubyforge.com/projects/nitro
+This distribution is intended to allow developers to get a
+quick look at the platform. For real development please use
+the gem distribution.
+
+
+== Running the example applications
+
+* examples/tiny
+
+A simple application that requires no external applications
+
+$ cd nitro/examples/tiny
+
+$ vi conf/apache.conf
+
+edit user, group,DocumentRoot root as needed.
+
+or 
+
+$vi conf/lhttpd.conf
+
+edit as needed, or edit 
+
+$ vi run.rb
+
+$ ruby run.rb 
+
+browse http://127.0.0.1:9000
+
+* examples/blog
+
+A simple Blog application to demonstrate xsl skins, Og models,
+xml dispatchers and more.
+
+$ cd nitro/examples/blog
+
+$ vi conf/apache.conf
+$ vi conf/lhttpd.conf
+
+edit the configuration as needed.
+
+$ vi run.rb
+
+edit the postgresql user and password
+
+if you wan to run this application with MySQL
+edit the configuration file to include
+
+{
+  ...
+  :adapter => "mysql"
+  ...
+}
+
+instead.
+
+there is no need to initialize the database, Og automatically
+takes cate of this.
+
+$ ruby run.rb 
+
+this script starts the the blog application using the WEBrick
+adapter.
+
+browse http://127.0.0.1:9000
+
+You can run the application in debug mode with the following
+command:
+
+$ ruby run.rb --debug
+
+
+== Debuging Nitro applications
+
+Have "tail -f" commands running on log/app.log in your application
+directory. Nitro will automatically display debugging and runtime
+information to these files. Debugging info will also be shown in the 
+browser when running in debug mode.
+
+
+== Description of contents
+
+bin
+  Commands and wizards.
+
+examples/
+  Various examples. 'tiny' is a minimal example, 'blog' is a 
+  fully working and nice looking Blog implementation, 'no_xsl_blog'
+  is the same example without using XSLT, 'og' contains some Og 
+  examples and 'flash' is an example for generating binary content 
+  for a Nitro response.
+
+lib/nitro
+  Nitro library source files.
+
+test
+  Unit and functional tests.
+
+
+== Running Tests
+
+The easiest way to run the included unit tests is through Rake:
+
+$ rake test_all
+
+runs all the tests including database tests.
+
+$ rake test
+
+runs all tests except the database tests.
+
+Rake can be found at http://rake.rubyforge.org
+
+
+== Support
+
+For any questions regarding Nitro, feel free to ask on the ruby-talk 
+mailing list (which is mirrored to comp.lang.ruby) or contact 
+mailto:george.moschovitis@gmail.com.
+
+A Nitro specific mailing list is also available. Please subscribe
+to nitro-general@rubyforge.com. The homepage for this list
+is available here:
+
+http://rubyforge.org/mailman/listinfo/nitro-general
+
+
+== Licence
+
+Copyright (c) 2004-2007, George 'gmosx' Moschovitis (http://www.gmosx.com)
+
+Nitro (http://www.nitroproject.org) is copyrighted free software 
+created and maintained by George Moschovitis (mailto:george.moschovitis@gmail.com)
+and released under the standard BSD Licence. For details consult
+the file LICENCE.

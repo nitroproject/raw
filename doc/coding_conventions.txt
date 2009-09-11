@@ -1,0 +1,11 @@
+Coding conventions:
+
+* Use two spaces for identation.
+* Try to make the source code lines less than 64 chars wide. This
+  improves the visibility. But please, do not go out of the way 
+  (artificially breaking your code) to enforce this rule.
+* Use "" as delimeter for both static and dynamic strings.
+* Use 
+    alias :new :old 
+  instead of 
+    alias_method :new, :old
